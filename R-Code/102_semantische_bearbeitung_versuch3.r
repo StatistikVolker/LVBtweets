@@ -98,23 +98,26 @@ test3 <- mkr.stoerungen("2022-02-03") # tweets vom 2022-01-23
 lvbstoerung <- bind_rows(test1,test2,test3) %>%
   distinct() %>% # doppelte raus!
   mutate(idx_answertweet =  `^@`,
-         idx_mivstoerung = as.numeric((`PKW IM GLEIS`+`PKW. IM GLEIS`+`FALSCHPARKER`+`RÜCKSTAU`+`LKW`+`HOHESN VERKEHRSAUFKOMME`+`HOHEN VERKEHRSAUFKOMMEN`) > 0),
-         idx_unfall      = as.numeric((`HAVARIE`+`UNFALL`+`VERKEHRSUNAFALL`+`UMLEITUNG`+`STRECKENBLOCKIERUNG `+`SPERRUNG`+`WITTERUNG`) > 0),
+         idx_mivstoerung = as.numeric((`PKW IM GLEIS`+`PKW. IM GLEIS`+`FALSCHPARKER`+`RÜCKSTAU`+`LKW`+`HOHESN VERKEHRSAUFKOMME`+`HOHEN VERKEHRSAUFKOMMEN`+`UNFALL`+`VERKEHRSUNAFALL`) > 0),
+         idx_baustelle   = as.numeric((`HAVARIE`+`UMLEITUNG`+`STRECKENBLOCKIERUNG `+`SPERRUNG`+`WITTERUNG`+ `DEFEKTEN SCHRANKENANLAGE`+`HAUSEINSTURZ`+`BAUARBEITEN`) > 0),
          idx_blaulicht   = as.numeric((`NOTARZTEINSATZ`+`RETTUNGSEINSATZ`+`FEUERWEHREINSATZ`+`POLIZEIEINSATZ`) > 0),
          idx_demo        = as.numeric((`DEMONSTRATION`+`CHRISTOPHER STREET DAY`+`DEMO`+`AUFZUGES`) > 0),
          idx_fahrplan    = as.numeric((`VERKÜRZT`+`SEV`+`SCHIENENERSATZVERKEHR`+`NICHT MÖGLICH`+`FAHRPLANUNREGELMÄßIGKEITEN`+`NOTBETRIEB`) > 0),
-         idx_baustelle   = as.numeric((`DEFEKTEN SCHRANKENANLAGE`+`HAUSEINSTURZ`+`BAUARBEITEN`) > 0),
-         idx_lvbintern   = as.numeric((`VERSPÄTUNG`+`AUSFALL`+`LEITUNGSSCHADEN`+`STÖRUNG`+`FAHRZEUGSCHADEN`+
-                                       `BETRIEBLICHEN GRÜNDEN`+`BETRIEBLICHE GRÜNDE`+`LEITUNGSARBEITEN`+
-                                         `REINIGUNGSARBEITEN`+`FAHRBAHNVERUNREINIGUNG`) > 0),
-         idx_beendet     = as.numeric((`AB SOFORT`+`FÄHRT WIEDER`+`WIEDER BEFAHRBAR`+`NORMAL`+`WIEDER IM EINSATZ`+`GEHEND NACH FAHRPLAN`+`PLANMÄßIG`+
-                                         `NORMALER LINIENFÜHRUNG`+`WIEDER NACH FAHRPLAN`+`BEENDET`) > 0),
-         idx_sonstiges   = as.numeric((`UPDATE`+`SONSTIGES`) > 0)) %>%
+         idx_lvbintern   = as.numeric((`VERSPÄTUNG`+`AUSFALL`+`LEITUNGSSCHADEN`+`STÖRUNG`+`FAHRZEUGSCHADEN`+`BETRIEBLICHEN GRÜNDEN`+`BETRIEBLICHE GRÜNDE`+`LEITUNGSARBEITEN`+`REINIGUNGSARBEITEN`+`FAHRBAHNVERUNREINIGUNG`+`UPDATE`) > 0),
+         idx_beendet     = as.numeric((`AB SOFORT`+`FÄHRT WIEDER`+`WIEDER BEFAHRBAR`+`NORMAL`+`WIEDER IM EINSATZ`+`GEHEND NACH FAHRPLAN`+`PLANMÄßIG`+`NORMALER LINIENFÜHRUNG`+`WIEDER NACH FAHRPLAN`+`BEENDET`) > 0),
+         idx_sonstiges   = as.numeric((`SONSTIGES`) > 0)) %>%
   select(TEXT,starts_with("idx_")) 
          #`PKW IM GLEIS`,`PKW. IM GLEIS`,`FALSCHPARKER`,`RÜCKSTAU`,`LKW`,`HOHESN VERKEHRSAUFKOMME`,`HOHEN VERKEHRSAUFKOMMEN`,
          #everything())
 
 OurTools::Table(lvbstoerung$idx_mivstoerung,lvbstoerung$idx_beendet)
+OurTools::Table(lvbstoerung$idx_baustelle,lvbstoerung$idx_beendet)
+OurTools::Table(lvbstoerung$idx_blaulicht,lvbstoerung$idx_beendet)
+OurTools::Table(lvbstoerung$idx_demo,lvbstoerung$idx_beendet)
+OurTools::Table(lvbstoerung$idx_fahrplan,lvbstoerung$idx_beendet)
+OurTools::Table(lvbstoerung$idx_lvbintern,lvbstoerung$idx_beendet)
+OurTools::Table(lvbstoerung$idx_sonstiges,lvbstoerung$idx_beendet)
+OurTools::Table(lvbstoerung$idx_answertweet,lvbstoerung$idx_beendet)
 
 # Kontrollen
 names(lvbstoerung)
